@@ -74,6 +74,10 @@ The **⛶** button at the top of each 2D view (bottom-right for the 3D view) mak
 
 Toggle regions in the **Ontology** panel on the left, or find them with the search box by name, acronym or ID.
 
+**Click the color square** on the left of any entry to change its color. The new color is applied to the 3D mesh, the 2D sections, the list and the path-analysis plot at once, and structures you have not switched on yet can be set in advance.
+
+> **The color picker** — pick from the square and the hue strip, or type straight into the **HEX · HSB · RGB** boxes (the HEX box also takes `rgb()`, `hsl()` and CSS color names). The **eyedropper** samples any color on your screen, **Reset to original** restores the color it started with and **Reset all** does the same for every entry. **Esc** cancels and restores the color you opened with.
+
 > **Dimmed entries** are structures with no mesh in the Allen CCFv3. Of the roughly 1,300 structures listed, only about 840 come with meshes, so subdivisions below a certain level cannot be displayed and their toggle is disabled. This is a limit of the source dataset, not of the app.
 
 ---
@@ -84,6 +88,7 @@ Register your targets in the **Points** panel on the right.
 
 - Click **New point** to create one, then set its name, coordinates, and **radius**. The radius is there to gauge the spread during infusion.
 - **Take coordinates by clicking a 2D view** — press the **◎ PICK** button at the right end of the coordinate row, and the cursor becomes a crosshair over the 2D views. Click the spot you want and its coordinates are filled in automatically. Press **Esc** to cancel.
+- **Change its color** — click the color square on the left of the row to open the same picker described in section 2.
 - **Double-click** a point to move the 2D views to it.
 - For many coordinates at once, use **Import points (CSV)**. Register one point and run **Export points (CSV)** to see the exact format the importer expects.
 
@@ -105,7 +110,7 @@ Tick **Path** on a point to draw the route that reaches it and create a **Path a
 
 ## 5. Saving and sharing
 
-**Save session**, next to the app name at the top-left, writes the current settings and registered points to a `.json` file. **Load session** reads it back.
+**Save session**, next to the app name at the top-left, writes the current settings, your colors and the registered points to a `.json` file. **Load session** reads it back.
 
 - Type a note in the box just above **Save session** and it is appended to the filename after an underscore (e.g. `ccf-session-…_mouse42.json`).
 - Hand that `.json` (or the app's html file) to someone else running the same app and they can **reproduce your exact state**.
@@ -122,7 +127,7 @@ The **Export images** panel on the right holds three buttons.
 | **2D → PNG** | the current 2D sections as a PNG |
 | **2D → SVG** | the current 2D sections as **vector** artwork |
 
-SVG lets you restyle strokes and colours freely in Illustrator · Inkscape, which **suits figure preparation for papers**.
+SVG lets you restyle strokes and colors freely in Illustrator · Inkscape, which **suits figure preparation for papers**.
 The 2D exports follow what is on screen — if one view is **maximized you get that view alone**, otherwise **all three sections side by side**.
 
 ---
