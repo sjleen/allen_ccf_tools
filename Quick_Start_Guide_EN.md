@@ -72,7 +72,7 @@ The **⛶** button at the top-left of each 2D view (bottom-right for the 3D view
 
 **Showing and hiding structures**
 
-Toggle regions in the **Ontology** panel on the left, or find them with the search box by name, acronym or ID.
+Toggle regions in the **Ontology** panel on the left, or find them with the search box by name, acronym or ID. Hovering over a switched-on region in a 2D section shows its name, as in 3D.
 
 **Click the color square** on the left of any entry to change its color. The new color is applied to the 3D mesh, the 2D sections, the list and the path-analysis plot at once, and structures you have not switched on yet can be set in advance.
 
