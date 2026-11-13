@@ -6481,7 +6481,8 @@ window.ccfSlicerSet=function(s){if(!s)return;s.ap0==null&&s.ap1!=null&&(s.ap0=s.
 // because three.js could not be fetched from the CDN - e.g. the file was opened
 // directly via file:// , or there is no network), tell the user instead of
 // showing a silent blank screen.
-window.addEventListener('load', ()=>{
+window.addEventListener('load', async ()=>{
+  await window.__ccfDataReady;   // start the 4 s watchdog only after the mesh download
   setTimeout(()=>{
     if(window.__ccfBooted) return;
     const div = document.createElement('div');
