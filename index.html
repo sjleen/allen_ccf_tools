@@ -35,8 +35,10 @@ nav{display:flex;gap:4px;align-items:center}
 .ghost:hover{color:var(--ink);border-color:var(--line);text-decoration:none}
 
 main{max-width:1240px;margin:0 auto;padding:28px 16px 40px}
-.lead{max-width:760px;margin:0 0 6px;font-size:20px;font-weight:650;letter-spacing:-.01em;line-height:1.3}
-.lead-sub{max-width:760px;margin:0 0 22px;color:var(--muted);font-size:13.5px}
+.lead{margin:0 0 8px;font-size:20px;font-weight:650;letter-spacing:-.01em;line-height:1.3}
+.lead-sub{margin:0 0 22px;color:var(--muted);font-size:13.5px}
+/* 줄바꿈은 문장 단위로 직접. 좁은 화면에선 자연 줄바꿈 */
+p,li{text-wrap:pretty}
 .facts{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;padding:0;list-style:none}
 .facts li{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:var(--panel)}
 
@@ -70,6 +72,7 @@ footer p{margin:3px 0}
   .apps,.notes{grid-template-columns:1fr}
   .lead{font-size:18px}
   nav .hide-sm{display:none}
+  br.lg{display:none}
 }
 </style>
 </head>
@@ -90,8 +93,8 @@ footer p{margin:3px 0}
 </header>
 
 <main>
-  <p class="lead">Plan stereotaxic targets on the Allen mouse brain atlas, then match it to the way your sections were cut.</p>
-  <p class="lead-sub">Two browser tools built on the Allen Mouse Brain Common Coordinate Framework. Coordinates are corrected to the flat-skull position, so what you read on screen is close to what you set on the frame.</p>
+  <p class="lead">Plan stereotaxic targets on the Allen mouse brain atlas, <br class="lg">then match it to the way your sections were cut.</p>
+  <p class="lead-sub">Two browser tools built on the Allen Mouse Brain Common Coordinate Framework. <br class="lg">Coordinates are corrected to the flat-skull position, so what you read on screen is close to what you set on the frame.</p>
   <ul class="facts">
     <li>Runs in the browser, nothing to install</li>
     <li>Works offline once loaded</li>
@@ -124,7 +127,7 @@ footer p{margin:3px 0}
       <div class="body">
         <div class="tag">Match histology</div>
         <h2>Allen CCF Slicer</h2>
-        <p>Find the pitch and yaw your brain was actually cut at, and browse the atlas section by section at your real thickness.</p>
+        <p>Find the pitch and yaw your brain was actually cut at, <br class="lg">and browse the atlas section by section at your real thickness.</p>
         <ul>
           <li>Tilt the coronal plane and step through numbered sections</li>
           <li>Fit the angle from injection or probe tracks: span, direction and tip offsets</li>
