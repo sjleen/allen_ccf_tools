@@ -10,12 +10,12 @@
 :root{
   color-scheme:dark;
   --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#8b949e; --line:#30363d; --line-soft:#21262d;
-  --accent:#58a6ff; --accent-soft:#132a45; --accent-ink:#0d1117; --slice:#ffb340; --slice-soft:#3a2a10; --slice-ink:#1a1205;
+  --accent:#58a6ff; --accent-soft:#132a45; --accent-ink:#0d1117;
 }
 :root[data-theme="light"]{
   color-scheme:light;
   --bg:#f6f8fa; --panel:#ffffff; --ink:#1f2328; --muted:#59636e; --line:#d1d9e0; --line-soft:#e7ecf0;
-  --accent:#0969da; --accent-soft:#ddf4ff; --accent-ink:#ffffff; --slice:#b35900; --slice-soft:#fff1e0; --slice-ink:#ffffff;
+  --accent:#0969da; --accent-soft:#ddf4ff; --accent-ink:#ffffff;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -60,7 +60,6 @@ p,li{text-wrap:pretty}
 .app.slicer .shot img{object-position:50% 45%}
 .body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
 .tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
-.app.slicer .tag{color:var(--slice)}
 .app h2{margin:0 0 6px;font-size:16px;font-weight:650;letter-spacing:-.01em}
 .app p{margin:0 0 12px;color:var(--muted)}
 .app ul{margin:0 0 16px;padding-left:18px}
