@@ -999,6 +999,8 @@
       <h2>Track fit</h2>
       <div class="hint" style="margin-top:0;margin-bottom:8px;">For each injection / probe track enter the coordinates you used, how many sections it spans from the brain surface to the tip, and whether it moves posterior or anterior as it goes deeper &mdash; that gives the <b>pitch</b>. Add each tip's <b>offset</b> in sections to also get the <b>yaw</b> (from tracks at different ML): pick one tip as 0, then + for tips that showed up in more anterior sections and &minus; for more posterior ones (&minus;4 = four sections posterior). After <b>Apply</b>, the tip at 0 sits in section #0, so section numbers read like offsets. Thickness and numbering come from <b>Sectioning setup</b> on the Slicing tab.</div>
       <div class="row"><label>Target DV</label><select id="trk-dvref"><option value="bregma">from bregma (skull)</option><option value="surface">depth from brain surface</option></select></div>
+      <div class="row" title="Surgery zeroing error: every track is drawn and fitted at entered + this shift. Your entered coordinates stay unchanged."><label>Zeroing error</label><span class="small">ML</span><input type="number" id="zr-ml" step="0.05" value="0" style="width:52px;"><span class="small">AP</span><input type="number" id="zr-ap" step="0.05" value="0" style="width:52px;"><span class="small">DV</span><input type="number" id="zr-dv" step="0.05" value="0" style="width:52px;"><span class="small">mm</span></div>
+      <div class="hint" style="margin:-2px 0 6px;">Shifts all tracks at once, e.g. bregma set 0.1 mm off &rarr; enter AP 0.1 instead of editing every track. Sign = stereotaxic (+ right / anterior / dorsal). DV is ignored when Target DV is depth from surface.</div>
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11.5px;margin-bottom:6px;"><input type="checkbox" id="trk-fitT" style="margin:0;" />Also fit effective section thickness</label>
       <div class="btn-row"><button class="primary" id="trk-add">New track</button><button id="trk-csv-in">Import CSV</button><button id="trk-csv-out">Export CSV</button></div>
       <input type="file" id="trk-file" accept=".csv,text/csv" style="display:none;" />
@@ -6283,13 +6285,15 @@ function ccfSurfaceHit(S,d){
   return hit.length?hit[0].point.clone():null;
 }
 function ccfTrackDir(T){let d=new F(Math.tan((T.angML||0)*Math.PI/180),1,Math.tan((T.angAP||0)*Math.PI/180));return d.normalize()}   // 월드: +y = ventral
+var ccfZero={ml:0,ap:0,dv:0};   // 수술 영점 오차(mm): 모든 트랙 = 입력값 + 이 값
 function ccfTrackGeom(T){
   let ref=(document.getElementById("trk-dvref")||{}).value||"bregma";
-  let key=[T.ap,T.ml,T.dv,T.angML,T.angAP,ref,Ge.tiltDeg,Ge.dvStretch,Ge.mlStretch,Ge.apStretch,Ge.bregma.ap,Ge.bregma.dv,Ge.bregma.ml,Ge.apCorr,Ge.dvCorr,!!lt.get(997)].join();
+  let Z=ccfZero,ml=T.ml+Z.ml,ap=T.ap+Z.ap,dv=T.dv+Z.dv;
+  let key=[T.ap,T.ml,T.dv,Z.ml,Z.ap,Z.dv,T.angML,T.angAP,ref,Ge.tiltDeg,Ge.dvStretch,Ge.mlStretch,Ge.apStretch,Ge.bregma.ap,Ge.bregma.dv,Ge.bregma.ml,Ge.apCorr,Ge.dvCorr,!!lt.get(997)].join();
   if(T._g&&T._g.key===key)return T._g.v;
   let d=ccfTrackDir(T),E,Tp;
-  if(ref==="surface"){let S=new F(T.ml*1e3,-3500,T.ap*1e3);E=ccfSurfaceHit(S,new F(0,1,0));if(!E){T._g={key,v:null};return null}Tp=E.clone().addScaledVector(d,Math.abs(T.dv)*1e3)}
-  else{Tp=new F(T.ml*1e3,-T.dv*1e3,T.ap*1e3);let S=Tp.clone().addScaledVector(d,-12e3);E=ccfSurfaceHit(S,d)||Tp.clone()}
+  if(ref==="surface"){let S=new F(ml*1e3,-3500,ap*1e3);E=ccfSurfaceHit(S,new F(0,1,0));if(!E){T._g={key,v:null};return null}Tp=E.clone().addScaledVector(d,Math.abs(T.dv)*1e3)}
+  else{Tp=new F(ml*1e3,-dv*1e3,ap*1e3);let S=Tp.clone().addScaledVector(d,-12e3);E=ccfSurfaceHit(S,d)||Tp.clone()}
   let v={E,T:Tp,d,L:Math.max(1e-6,E.distanceTo(Tp))};T._g={key,v};return v;
 }
 // 트랙 1개의 관측: 걸친 장수(span)와 깊어질수록의 방향 → 표면 section과 팁 section의 번호 차 dk(= kT − kE)
@@ -6409,9 +6413,9 @@ function ccfCsvLine(s){let o=[],c="",q=!1;for(let i=0;i<s.length;i++){let h=s[i]
 function ccfDl(name,text,type){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2e3)}
 function ccfStamp(){let d=new Date(),p=n=>String(n).padStart(2,"0");return`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}-${p(d.getHours())}-${p(d.getMinutes())}-${p(d.getSeconds())}`}
 window.ccfSlicerGet=function(){let T=ccfTilt;return{pitch:T.pitch,yaw:T.yaw,dvRef:T.dvRef,t:T.t,ap0:T.ap0,dir:T.dir,lines:T.lines,plane3d:T.plane3d,
-  tracks:{dvRef:(document.getElementById("trk-dvref")||{}).value,fitT:!!(document.getElementById("trk-fitT")||{}).checked,list:ccfTracks.map(({_g,...t})=>t)}}};
+  tracks:{zero:{...ccfZero},dvRef:(document.getElementById("trk-dvref")||{}).value,fitT:!!(document.getElementById("trk-fitT")||{}).checked,list:ccfTracks.map(({_g,...t})=>t)}}};
 window.ccfSlicerSet=function(s){if(!s)return;s.ap0==null&&s.ap1!=null&&(s.ap0=s.ap1);["pitch","yaw","dvRef","t","ap0","dir","lines","plane3d"].forEach(k=>{s[k]!=null&&(ccfTilt[k]=s[k])});
-  if(s.tracks){let a=document.getElementById("trk-dvref");a&&s.tracks.dvRef&&(a.value=s.tracks.dvRef);let b=document.getElementById("trk-fitT");b&&(b.checked=!!s.tracks.fitT);ccfTracks=s.tracks.list||[]}
+  if(s.tracks){let a=document.getElementById("trk-dvref");a&&s.tracks.dvRef&&(a.value=s.tracks.dvRef);let b=document.getElementById("trk-fitT");b&&(b.checked=!!s.tracks.fitT);ccfTracks=s.tracks.list||[];let z=s.tracks.zero||{};ccfZero={ml:+z.ml||0,ap:+z.ap||0,dv:+z.dv||0};["ml","ap","dv"].forEach(k=>{let e=document.getElementById("zr-"+k);e&&(e.value=ccfZero[k])})}
   ccfTiltUpdate();ccfSlicerSync();ccfRenderTracks();ccfRunFit();ccfSlicerRefresh()};
 (function ccfSlicerInit(){
   let $=id=>document.getElementById(id),num=(id,d)=>{let v=parseFloat($(id).value);return Number.isFinite(v)?v:d};
@@ -6441,6 +6445,7 @@ window.ccfSlicerSet=function(s){if(!s)return;s.ap0==null&&s.ap1!=null&&(s.ap0=s.
     if(e.key==="ArrowLeft"||e.key==="ArrowRight"){let d=(e.key==="ArrowRight"?1:-1)*(e.shiftKey?5:1);step(d);e.preventDefault();e.stopPropagation()}},!0);
   $("trk-add").onclick=()=>{if(!window.ccfBregmaOk())return;let i=ccfTracks.length;ccfTracks.push({name:"Track "+(i+1),color:ccfTrackCol[i%ccfTrackCol.length],ml:1,ap:0,dv:-3,span:"",deeper:"post",tip:"",angML:0,angAP:0});ccfRenderTracks();ccfTracksChanged()};
   $("trk-dvref").addEventListener("change",()=>{ccfRenderTracks();ccfTracksChanged()});
+  ["ml","ap","dv"].forEach(k=>$("zr-"+k).addEventListener("input",()=>{ccfZero[k]=num("zr-"+k,0);ccfTracksChanged()}));
   // 트랙 표: 행마다 리스너를 달지 않고 표 전체에 한 번(행을 다시 그려도 유지)
   $("trk-list").addEventListener("change",e=>{let t=e.target,f=t.dataset.f,tr=t.closest("tr[data-i]");if(!f||!tr)return;let T=ccfTracks[+tr.dataset.i];T[f]=["name","color","tip","span","deeper"].includes(f)?t.value:(parseFloat(t.value)||0);ccfTracksChanged()});
   $("trk-list").addEventListener("click",e=>{let a=e.target.dataset.a,tr=e.target.closest("tr[data-i]");if(!a||!tr)return;let i=+tr.dataset.i,T=ccfTracks[i];
