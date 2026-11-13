@@ -999,7 +999,7 @@
 
     <div class="section">
       <h2>Track fit</h2>
-      <div class="hint" style="margin-top:0;margin-bottom:8px;">For each injection / probe track enter the coordinates you used, how many sections it spans from the brain surface to the tip, and whether it moves posterior or anterior as it goes deeper &mdash; that gives the <b>pitch</b>. Add each tip's <b>offset</b> in sections to also get the <b>yaw</b> (from tracks at different ML): pick one tip as 0, then + for tips that showed up in more anterior sections and &minus; for more posterior ones (&minus;4 = four sections posterior). Once every track is filled in, the plane follows the fit automatically (moving an angle or #0 AP by hand stops that; <b>Follow fit</b> resumes it), and the tip at 0 sits in section #0, so section numbers read like offsets. Thickness and numbering come from <b>Sectioning setup</b> on the Slicing tab.</div>
+      <div class="hint" style="margin-top:0;margin-bottom:8px;">For each injection / probe track enter the coordinates you used, how many sections it spans from the brain surface to the tip, and whether it moves posterior or anterior as it goes deeper &mdash; that gives the <b>pitch</b>. Add each tip's <b>offset</b> in sections to also get the <b>yaw</b> (from tracks at different ML): pick one tip as 0 (enter it), then + for tips that showed up in more anterior sections and &minus; for more posterior ones (&minus;4 = four sections posterior). Once every track is filled in, the plane follows the fit automatically (moving an angle or #0 AP by hand stops that; <b>Follow fit</b> resumes it), and the tip at 0 sits in section #0, so section numbers read like offsets. Thickness and numbering come from <b>Sectioning setup</b> on the Slicing tab.</div>
       <div class="row"><label>Target DV</label><select id="trk-dvref"><option value="bregma">from bregma (skull)</option><option value="surface">depth from brain surface</option></select></div>
       <div class="row" title="Surgery zeroing error: every track is drawn and fitted at entered + this shift. Your entered coordinates stay unchanged."><label>Zeroing error</label><span class="small">ML</span><input type="number" id="zr-ml" step="0.05" value="0" style="width:52px;"><span class="small">AP</span><input type="number" id="zr-ap" step="0.05" value="0" style="width:52px;"><span class="small">DV</span><input type="number" id="zr-dv" step="0.05" value="0" style="width:52px;"><span class="small">mm</span></div>
       <div class="hint" style="margin:-2px 0 6px;">Shifts all tracks at once, e.g. bregma set 0.1 mm off &rarr; enter AP 0.1 instead of editing every track. Sign = stereotaxic (+ right / anterior / dorsal). DV is ignored when Target DV is depth from surface.</div>
@@ -6303,7 +6303,7 @@ function ccfTrackGeom(T){
 //   팁 #이 있으면 표면·팁 두 점이 각자 그 번호 section 면 위(절대), 없으면 둘의 번호 차만(상대 — #1 위치와 무관)
 function ccfTrackObs(T){
   let G=ccfTrackGeom(T);if(!G)return null;
-  let n=parseInt(T.span),off=parseFloat(T.tip);if(!Number.isFinite(off)&&T===ccfTracks[0])off=0;   // 첫 트랙이 비어 있으면 기준 0으로 씀(입력칸에는 흐린 0)
+  let n=parseInt(T.span),off=parseFloat(T.tip);   // tip offset은 필수(빈칸 = 모름). 기준 트랙에도 0을 직접 입력
   let kT=Number.isFinite(off)?Math.round(off):NaN;   // offset은 AP 부호(+앞/−뒤) → 번호 방향에 맞춰 section 번호로(offset 0 = #1)
   // 'post' 번호(뒤로 갈수록 커짐)에서 깊어질수록 뒤로 가면 팁 번호가 더 큼
   let dk=Number.isFinite(n)&&n>=1?(n-1)*(T.deeper==="ant"?1:-1):null;
@@ -6322,9 +6322,9 @@ function ccfSolve(M,y){let n=M[0].length,A=Array.from({length:n},()=>new Array(n
   return A.map((r,i)=>r[n]/r[i])}
 function ccfSd(a){if(!a.length)return 0;let m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/a.length)}
 var ccfAuto=!0;   // 면이 fit 결과를 자동으로 따라감. 각도·#0 AP를 손으로 바꾸면 꺼짐
-function ccfTrackDone(T){return!!ccfTrackGeom(T)&&parseInt(T.span)>=1}   // 좌표 3개 + span이 다 있어야 계산·적용에 씀
+function ccfTrackDone(T){return!!ccfTrackGeom(T)&&parseInt(T.span)>=1&&String(T.tip??"").trim()!==""&&Number.isFinite(+T.tip)}   // 좌표 3개 + span + tip offset이 다 있어야 계산·적용에 씀(사용자 요청: tip 정보 없으면 반영 안 함)
 function ccfTracksComplete(){return ccfTracks.some(ccfTrackDone)}   // 빈 트랙은 건너뛰고, 완성된 트랙이 하나라도 있으면 적용
-function ccfMarkSkipped(){document.querySelectorAll("#trk-list tr[data-i]").forEach(tr=>{let T=ccfTracks[+tr.dataset.i],skip=!!T&&!ccfTrackDone(T);tr.classList.toggle("skip",skip);tr.title=skip?"Not used yet: fill in ML, AP, DV and Span":""})}
+function ccfMarkSkipped(){document.querySelectorAll("#trk-list tr[data-i]").forEach(tr=>{let T=ccfTracks[+tr.dataset.i],skip=!!T&&!ccfTrackDone(T);tr.classList.toggle("skip",skip);tr.title=skip?"Not used yet: fill in ML, AP, DV, Span and Tip offset":""})}
 function ccfAutoBtn(){let b=document.getElementById("fit-apply");if(!b)return;b.textContent=ccfAuto?"Following fit (auto)":"Follow fit";b.disabled=ccfAuto||!ccfFit}
 function ccfManual(){ccfAuto=!1;let s=document.getElementById("slc-src");s&&(s.textContent="manual");ccfAutoBtn()}
 var ccfAutoBusy=!1;
@@ -6341,7 +6341,7 @@ function ccfRunFit(){
     if(o.kT!=null){rows.push({a:1,x:Tp.ml,z:Tp.dv-ref,q:s*o.kT,y:Tp.ap});o.dk!=null&&rows.push({a:1,x:E.ml,z:E.dv-ref,q:s*(o.kT-o.dk),y:E.ap})}
     else if(o.dk!=null)rows.push({a:0,x:E.ml-Tp.ml,z:E.dv-Tp.dv,q:-s*o.dk,y:E.ap-Tp.ap});
     (o.kT!=null||o.dk!=null)&&use.push({T,ti,o,E,Tp})});
-  if(!rows.length){out.innerHTML="Add tracks with their span (and tip offsets for yaw).";return}
+  if(!rows.length){out.innerHTML="Fill in ML, AP, DV, Span and Tip offset for at least one track.";return}
   let abs=rows.filter(r=>r.a),rel=rows.filter(r=>!r.a);
   let freeA=abs.length>0,
       freeB=ccfSd(abs.map(r=>r.x))>250||rel.some(r=>Math.abs(r.x)>250),
@@ -6399,13 +6399,13 @@ function ccfRenderTracks(){
   host.innerHTML=`<div class="slc-tw"><table class="slc-tt"><thead>
     <tr class="grp"><th colspan="2"></th><th colspan="5">Placement</th><th colspan="3">In your sections</th><th colspan="2">This track</th><th></th></tr>
     <tr><th></th><th>Name</th><th title="mm">ML</th><th title="mm">AP</th><th title="mm">${dvLab}</th><th title="Tilt in the coronal plane, degrees; + = tip toward ML+">∠ML</th><th title="Tilt in the sagittal plane, degrees; + = tip toward anterior">∠AP</th>
-      <th title="How many sections the track appears in, from the section with the brain surface to the section with the tip, both counted">Span</th><th title="Going deeper, the track moves into more posterior (post) or anterior (ant) sections">Deeper</th><th title="Tip position relative to the other tips, in sections: + anterior, − posterior. Empty on the first track = 0 (reference)">Tip</th>
+      <th title="How many sections the track appears in, from the section with the brain surface to the section with the tip, both counted">Span</th><th title="Going deeper, the track moves into more posterior (post) or anterior (ant) sections">Deeper</th><th title="Tip position relative to the other tips, in sections: + anterior, − posterior. Required: enter 0 on the reference track">Tip</th>
       <th title="Pitch from this track's span and direction alone">Pitch</th><th title="Yaw from this tip's offset against the reference tip (needs a different ML)">Yaw</th><th></th></tr></thead><tbody>
     ${ccfTracks.map((T,i)=>`<tr data-i="${i}">
       <td><input type="color" data-f="color" value="${T.color}"></td>
       <td><input type="text" class="nm" data-f="name" value="${String(T.name).replace(/"/g,"&quot;")}"></td>
       <td>${num("ml",T.ml,"0.05")}</td><td>${num("ap",T.ap,"0.05")}</td><td>${num("dv",T.dv,"0.05")}</td><td>${num("angML",T.angML||0,"1")}</td><td>${num("angAP",T.angAP||0,"1")}</td>
-      <td>${num("span",T.span,"1")}</td><td><select data-f="deeper"><option value="post"${T.deeper!=="ant"?" selected":""}>post</option><option value="ant"${T.deeper==="ant"?" selected":""}>ant</option></select></td><td>${num("tip",T.tip,"1",i===0?"0":"")}</td>
+      <td>${num("span",T.span,"1")}</td><td><select data-f="deeper"><option value="post"${T.deeper!=="ant"?" selected":""}>post</option><option value="ant"${T.deeper==="ant"?" selected":""}>ant</option></select></td><td>${num("tip",T.tip,"1")}</td>
       <td class="r" id="trk-p-${i}">—</td><td class="r" id="trk-y-${i}">—</td>
       <td class="act"><button data-a="goto" title="Go to this track's tip">&#8982;</button><button data-a="del" class="danger" title="Remove track">&#10005;</button></td></tr>`).join("")}
   </tbody></table></div>`;

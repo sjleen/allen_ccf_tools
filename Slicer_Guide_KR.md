@@ -21,16 +21,16 @@
 
 **직접 맞추기**: **Slicing** 탭에서 pitch와 yaw를 돌려 가며 **Coronal** 뷰를 내 절편과 비교합니다.
 
-**track으로 맞추기**: 오른쪽 패널의 표에 track을 한 줄씩 입력합니다. 새 track은 좌표가 빈칸으로 시작합니다. ML / AP / DV와 Span이 다 채워져야 계산에 들어가며, 그 전까지는 행이 붉게 표시되고 fit에서 빠집니다. 주입 또는 probe track마다 다음을 입력합니다.
+**track으로 맞추기**: 오른쪽 패널의 표에 track을 한 줄씩 입력합니다. 새 track은 좌표가 빈칸으로 시작합니다. ML / AP / DV, Span, Tip offset이 다 채워져야 계산에 들어가며, 그 전까지는 행이 붉게 표시되고 fit에서 빠집니다. 주입 또는 probe track마다 다음을 입력합니다.
 
 - 수술 때 쓴 좌표 (flat skull 기준 ML / AP / DV, 각도는 선택);
 - *Span*: 뇌 표면이 보이는 section부터 tip이 보이는 section까지, 양 끝을 포함해 track이 걸친 장수 (1 = track 전체가 한 장 안에 있음);
 - *Deeper goes*: 깊이 들어갈수록 track이 뒤쪽 section으로 가는지 앞쪽 section으로 가는지;
-- *Tip offset* (선택): 이 tip이 다른 tip들에 비해 몇 장 떨어져 있는지. 부호는 AP와 같습니다: **+ = 더 앞쪽, − = 더 뒤쪽** (−4 = 네 장 뒤). tip 하나를 0으로 정하면 되고, 첫 track의 offset이 비어 있으면 0으로 칩니다. 절단면이 fit을 따라가면 offset 0인 tip이 section #0에 놓이므로, section 번호가 그대로 offset처럼 읽힙니다 (span 11이고 깊어질수록 뒤로 가는 track은 표면 #+10부터 tip #0까지 걸칩니다).
+- *Tip offset*: 이 tip이 다른 tip들에 비해 몇 장 떨어져 있는지. 부호는 AP와 같습니다: **+ = 더 앞쪽, − = 더 뒤쪽** (−4 = 네 장 뒤). 기준이 될 tip 하나에 0을 직접 입력합니다. 비어 있으면 "모름"으로 보고 그 track은 쓰지 않습니다. 절단면이 fit을 따라가면 offset 0인 tip이 section #0에 놓이므로, section 번호가 그대로 offset처럼 읽힙니다 (span 11이고 깊어질수록 뒤로 가는 track은 표면 #+10부터 tip #0까지 걸칩니다).
 
-표의 마지막 두 열은 그 track 하나만으로 계산한 pitch와 yaw입니다 (pitch는 span과 방향에서, yaw는 기준 tip과의 tip offset에서 나옵니다. 기준 track과 ML이 거의 같은 track은 "—"로 표시됩니다). 그래서 다른 track들과 안 맞는 track이 바로 눈에 띕니다. span과 방향만으로 **pitch**가 정해집니다. ML이 서로 다른 track에 tip offset이 있으면 **yaw**(와 section #0의 위치)도 정해지며, 없으면 이 값들은 현재 값으로 유지됩니다. 모든 track을 하나의 최소제곱 fit에 넣습니다. 결과 표에는 track마다 입력한 값과 fit된 면이 예측한 값이 나란히 나오고, 한 장 넘게 어긋난 행은 강조됩니다.
+표의 마지막 두 열은 그 track 하나만으로 계산한 pitch와 yaw입니다 (pitch는 span과 방향에서, yaw는 기준 tip과의 tip offset에서 나옵니다. 기준 track과 ML이 거의 같은 track은 "—"로 표시됩니다). 그래서 다른 track들과 안 맞는 track이 바로 눈에 띕니다. span과 방향으로 **pitch**가 정해지고, 깊이가 다른 tip들이 이를 보정합니다. ML이 서로 다른 track의 tip offset으로 **yaw**가 정해지고, tip들이 section #0의 위치를 정합니다. 모든 track의 ML이 거의 같으면 yaw는 현재 값으로 유지됩니다. 모든 track을 하나의 최소제곱 fit에 넣습니다. 결과 표에는 track마다 입력한 값과 fit된 면이 예측한 값이 나란히 나오고, 한 장 넘게 어긋난 행은 강조됩니다.
 
-**절단면은 fit을 자동으로 따라갑니다.** 완성된 track이 하나라도 있으면(덜 채워진 track은 건너뜁니다) pitch, yaw, #0 위치가 **Slicing** 탭에 들어가고, 화면은 보고 있던 section 번호를 그대로 유지합니다. 각도, *Reset angles*, *#0 center AP*를 손으로 바꾸면 **manual**로 바뀌어 더 이상 따라가지 않습니다. **Follow fit**을 누르면 다시 따라가기 시작하며, 첫 track의 tip이 있는 section으로 이동합니다. 이 상태는 session에 저장됩니다 (이 기능 전에 저장한 session은 manual로 열립니다).
+**절단면은 fit을 자동으로 따라갑니다.** 완성된 track이 하나라도 있으면(tip offset이 없는 track을 포함해 덜 채워진 track은 건너뜁니다) pitch, yaw, #0 위치가 **Slicing** 탭에 들어가고, 화면은 보고 있던 section 번호를 그대로 유지합니다. 각도, *Reset angles*, *#0 center AP*를 손으로 바꾸면 **manual**로 바뀌어 더 이상 따라가지 않습니다. **Follow fit**을 누르면 다시 따라가기 시작하며, 첫 track의 tip이 있는 section으로 이동합니다. 이 상태는 session에 저장됩니다 (이 기능 전에 저장한 session은 manual로 열립니다).
 
 **Also fit effective section thickness**는 실제 한 장의 두께도 미지수로 함께 구합니다. 수축이나 압착 때문에 실제 두께가 vibratome 설정값과 다를 때 씁니다. 서로 다른 section 번호에서 본 정보가 필요하며 (두 개 이상의 track에 tip offset, 또는 span), 절단면이 fit을 따라갈 때 구한 두께가 **Thickness** 칸을 대신합니다. track이 한두 개뿐이면 끄세요. 두께가 각도 오차를 대신 흡수할 수 있습니다.
 
