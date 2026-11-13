@@ -594,6 +594,8 @@
   .slc-read span:nth-child(even){ text-align:right; font-variant-numeric:tabular-nums; }
   /* 트랙 표: 한 행 = 트랙. 오른쪽 패널이 좁으면 표만 가로 스크롤 */
   .slc-tw{ overflow-x:auto; margin-top:8px; border:1px solid var(--border); border-radius:6px; }
+  /* 아직 계산에 안 쓰는(칸이 덜 찬) 트랙 */
+  .slc-tt tr.skip td{ background:rgba(248,81,73,0.16); }
   .slc-tt{ border-collapse:collapse; font-size:11px; font-variant-numeric:tabular-nums; white-space:nowrap; }
   .slc-tt th{ font-weight:500; color:var(--text-faint); font-size:10px; padding:3px 2px; text-align:center; background:var(--panel-2); }
   .slc-tt tr.grp th{ color:var(--accent-2); font-weight:600; text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--border); }
@@ -6320,7 +6322,9 @@ function ccfSolve(M,y){let n=M[0].length,A=Array.from({length:n},()=>new Array(n
   return A.map((r,i)=>r[n]/r[i])}
 function ccfSd(a){if(!a.length)return 0;let m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/a.length)}
 var ccfAuto=!0;   // 면이 fit 결과를 자동으로 따라감. 각도·#0 AP를 손으로 바꾸면 꺼짐
-function ccfTracksComplete(){return ccfTracks.length>0&&ccfTracks.every(T=>ccfTrackGeom(T)&&parseInt(T.span)>=1)}
+function ccfTrackDone(T){return!!ccfTrackGeom(T)&&parseInt(T.span)>=1}   // 좌표 3개 + span이 다 있어야 계산·적용에 씀
+function ccfTracksComplete(){return ccfTracks.some(ccfTrackDone)}   // 빈 트랙은 건너뛰고, 완성된 트랙이 하나라도 있으면 적용
+function ccfMarkSkipped(){document.querySelectorAll("#trk-list tr[data-i]").forEach(tr=>{let T=ccfTracks[+tr.dataset.i],skip=!!T&&!ccfTrackDone(T);tr.classList.toggle("skip",skip);tr.title=skip?"Not used yet: fill in ML, AP, DV and Span":""})}
 function ccfAutoBtn(){let b=document.getElementById("fit-apply");if(!b)return;b.textContent=ccfAuto?"Following fit (auto)":"Follow fit";b.disabled=ccfAuto||!ccfFit}
 function ccfManual(){ccfAuto=!1;let s=document.getElementById("slc-src");s&&(s.textContent="manual");ccfAutoBtn()}
 var ccfAutoBusy=!1;
@@ -6328,12 +6332,12 @@ function ccfAutoApply(){if(!ccfAuto||!ccfFit||ccfAutoBusy||!ccfTracksComplete())
   if(P===T.pitch&&Y===T.yaw&&Math.abs(F_.ap0-T.ap0)<.5&&Tn===T.t)return;   // 이미 맞춰져 있음(재귀 방지)
   ccfAutoBusy=!0;try{let k=ccfSecK(ccfCorF());T.pitch=P;T.yaw=Y;T.ap0=F_.ap0;T.t=Tn;ccfTiltUpdate();ccfSlicerSync();let s=document.getElementById("slc-src");s&&(s.textContent="from track fit (auto)");ccfSetCorF(ccfSecF(k));ccfRunFit()}finally{ccfAutoBusy=!1}}
 function ccfRunFit(){
-  let out=document.getElementById("fit-out"),ap=document.getElementById("fit-apply");ccfFit=null;if(!out)return;ccfAutoBtn();if(!(ccfTilt.t>0)){out.innerHTML='<div class="hint" style="color:#ff7b72;">Enter section Thickness (Slicing tab &gt; Sectioning setup) to fit.</div>';return}
+  let out=document.getElementById("fit-out"),ap=document.getElementById("fit-apply");ccfFit=null;if(!out)return;ccfAutoBtn();ccfMarkSkipped();if(!(ccfTilt.t>0)){out.innerHTML='<div class="hint" style="color:#ff7b72;">Enter section Thickness (Slicing tab &gt; Sectioning setup) to fit.</div>';return}
   ccfPerTrack(ccfTilt.B,ccfTilt.C,ccfTilt.t*ccfTilt.g);   // fit이 안 돼도 현재 각도로 트랙별 값은 보여 줌
   let s=ccfSecSign(),ref=ccfTilt.dvRef,fitT=document.getElementById("trk-fitT").checked,rows=[],use=[];
   // 정위로 환산: ML=x, AP=z, DV=−y
   let st=p=>({ml:p.x,ap:p.z,dv:-p.y});
-  ccfTracks.forEach((T,ti)=>{let o=ccfTrackObs(T);if(!o)return;let E=st(o.G.E),Tp=st(o.G.T);
+  ccfTracks.forEach((T,ti)=>{if(!ccfTrackDone(T))return;let o=ccfTrackObs(T);if(!o)return;let E=st(o.G.E),Tp=st(o.G.T);
     if(o.kT!=null){rows.push({a:1,x:Tp.ml,z:Tp.dv-ref,q:s*o.kT,y:Tp.ap});o.dk!=null&&rows.push({a:1,x:E.ml,z:E.dv-ref,q:s*(o.kT-o.dk),y:E.ap})}
     else if(o.dk!=null)rows.push({a:0,x:E.ml-Tp.ml,z:E.dv-Tp.dv,q:-s*o.dk,y:E.ap-Tp.ap});
     (o.kT!=null||o.dk!=null)&&use.push({T,ti,o,E,Tp})});

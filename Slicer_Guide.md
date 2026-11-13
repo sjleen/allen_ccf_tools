@@ -21,7 +21,7 @@ Only the Coronal view is tilted. Sagittal and Horizontal stay axis-aligned and m
 
 **Manual** — turn pitch and yaw in the Slicing tab while comparing the Coronal view with your sections.
 
-**From tracks** — tracks are entered in a table (one row per track, right panel). A new track starts with empty coordinates; a track counts only once its ML / AP / DV are filled in. For each injection or probe track enter:
+**From tracks** — tracks are entered in a table (one row per track, right panel). A new track starts with empty coordinates. A track is used only once its ML / AP / DV and Span are filled in; until then its row is shaded red and it is left out of the fit. For each injection or probe track enter:
 
 - the coordinates you used (flat skull, ML / AP / DV, optional angles);
 - *Span* — how many sections the track appears in, from the section with the brain surface to the section with the tip, both counted (1 = the whole track sits in one section);
@@ -30,7 +30,7 @@ Only the Coronal view is tilted. Sagittal and Horizontal stay axis-aligned and m
 
 The last two columns show the pitch and yaw that this one track implies on its own (pitch from its span and direction, yaw from its tip offset against the reference tip; tracks at nearly the same ML as the reference show “—”), so a track that disagrees with the rest stands out. Span and direction alone give the **pitch**. Tip offsets on tracks at different ML add the **yaw** (and place section #0); without them those stay at their current values. All tracks go into one least-squares fit. The result table puts what you entered next to what the fitted plane predicts for every track; a row off by more than one section is highlighted.
 
-**The plane follows the fit automatically** once every track has ML / AP / DV and a span: pitch, yaw and the #0 position are copied into the Slicing controls, and the view stays on the section number you were looking at. Moving an angle, *Reset angles* or *#0 center AP* by hand switches to **manual** (the plane stops following); **Follow fit** turns following back on and jumps to the section that holds the first track's tip. The mode is saved with the session (sessions from before this change open in manual).
+**The plane follows the fit automatically** as soon as at least one track is complete (incomplete tracks are skipped): pitch, yaw and the #0 position are copied into the Slicing controls, and the view stays on the section number you were looking at. Moving an angle, *Reset angles* or *#0 center AP* by hand switches to **manual** (the plane stops following); **Follow fit** turns following back on and jumps to the section that holds the first track's tip. The mode is saved with the session (sessions from before this change open in manual).
 
 **Also fit effective section thickness** treats the real thickness per section as one more unknown, for when shrinkage or compression makes it differ from the vibratome setting. It needs tracks seen at different section numbers (tip offsets on two or more tracks, or spans), and the fitted value replaces Thickness when the plane follows the fit. With only one or two tracks leave it off — the thickness can soak up angle error.
 
