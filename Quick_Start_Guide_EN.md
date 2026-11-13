@@ -1,6 +1,6 @@
 # Allen CCF Explorer — Quick Start Guide
 
-A browser-based tool for exploring the Allen Mouse Brain Common Coordinate Framework (**CCFv3, 2017**) in 3D, and for planning injection and insertion targets in coordinates you can take straight to the stereotaxic frame. The mesh data is built into the app, so **no installation and no internet connection are required.**
+A browser-based tool for exploring the Allen Mouse Brain Common Coordinate Framework (**CCFv3, 2017**) in 3D, and for planning injection and insertion targets in coordinates you can take straight to the stereotaxic frame. **Open it straight from the web (https://sjleen.github.io/allen_ccf_tools/)**, or keep the html file and the mesh data file and use it **with no installation and no internet connection**.
 
 ---
 
@@ -14,7 +14,7 @@ A browser-based tool for exploring the Allen Mouse Brain Common Coordinate Frame
 **Requirements**
 
 - **Chrome · Edge**, or **Firefox · Safari from 2023 onward**. Mesh decompression relies on a built-in browser feature, so older browsers will not open the app.
-- On the first launch a **loading screen** appears for a few seconds while the mesh is read. After that the viewer opens immediately.
+- The first time you open it from the web, the **loading screen shows progress (%)** while the mesh data (about 93 MB) downloads. The browser keeps that data, so later visits open immediately.
 
 **Why this app's coordinates are different**
 
@@ -40,7 +40,7 @@ Both side panels collapse via the buttons at the **top-left / top-right of the v
 
 **If you are starting fresh, do this before anything else.** The bregma each experimenter works from differs slightly, so calibrating once improves the accuracy of every coordinate afterwards.
 
-Adjust it in the **Coordinates** tab → **Bregma / Lambda personalization** section. A recommended procedure:
+Adjust it in the **Coordinates** tab → **Bregma / Lambda personalization** section. **The Bregma AP / DV boxes start empty, and points cannot be created or imported until they are filled in** (enter 0 for no correction). A recommended procedure:
 
 1. Pick a target that is narrow along the AP axis. The **anterior commissure** (ML = midline ± 1 mm) works well.
 2. Inject a small amount of dye — for example **2–5 nL** of Trypan Blue.
@@ -68,7 +68,7 @@ Holding **Ctrl while rolling the wheel** changes the step from 0.1 to 0.01 mm �
 
 **Enlarging a single view**
 
-The **⛶** button at the top of each 2D view (bottom-right for the 3D view) makes that view fill the whole center area. While maximized, press **⤡** or **Esc** to return to the four-view layout.
+The **⛶** button at the top-left of each 2D view (bottom-right for the 3D view) makes that view fill the whole center area. While maximized, press **⤡** or **Esc** to return to the four-view layout.
 
 **Showing and hiding structures**
 
@@ -89,8 +89,8 @@ Register your targets in the **Points** panel on the right.
 - Click **New point** to create one, then set its name, coordinates, and **radius**. The radius is there to gauge the spread during infusion.
 - **Take coordinates by clicking a 2D view** — press the **◎ PICK** button at the right end of the coordinate row, and the cursor becomes a crosshair over the 2D views. Click the spot you want and its coordinates are filled in automatically. Press **Esc** to cancel.
 - **Change its color** — click the color square on the left of the row to open the same picker described in section 2.
-- **Double-click** a point to move the 2D views to it.
-- For many coordinates at once, use **Import points (CSV)**. Register one point and run **Export points (CSV)** to see the exact format the importer expects.
+- **Double-click** a point to move the 2D views to it. Tick **Mirror** to also draw the same point and path in the other hemisphere (ML sign flipped).
+- For many coordinates at once, use **Import points (CSV)**. Register one point and run **Export points (CSV)** to see the exact format the importer expects (mirror points are exported as extra rows with `(mirror)` after the name).
 
 ---
 

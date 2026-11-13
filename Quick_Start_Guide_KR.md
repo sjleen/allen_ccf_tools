@@ -1,6 +1,6 @@
 # Allen CCF Explorer — 빠른 시작 가이드
 
-Allen Mouse Brain Common Coordinate Framework(**CCFv3, 2017**)의 3D mesh를 브라우저에서 열어, stereotaxic surgery에 바로 쓸 수 있는 좌표로 뇌 구조를 탐색하고 주입·삽입 지점을 설계하는 도구입니다. mesh 데이터가 앱 안에 내장되어 있어 **설치 및 인터넷 연결이 필요 없습니다.**
+Allen Mouse Brain Common Coordinate Framework(**CCFv3, 2017**)의 3D mesh를 브라우저에서 열어, stereotaxic surgery에 바로 쓸 수 있는 좌표로 뇌 구조를 탐색하고 주입·삽입 지점을 설계하는 도구입니다. **웹(https://sjleen.github.io/allen_ccf_tools/)에서 바로 열 수 있고**, html 파일과 mesh 데이터 파일을 받아 두면 **설치 및 인터넷 연결 없이도** 씁니다.
 
 ---
 
@@ -14,7 +14,7 @@ Allen Mouse Brain Common Coordinate Framework(**CCFv3, 2017**)의 3D mesh를 브
 **실행 환경**
 
 - **Chrome · Edge**, 또는 **2023년 이후의 Firefox · Safari**가 필요합니다. mesh 압축 해제에 브라우저 내장 기능을 쓰기 때문에 오래된 브라우저에서는 열리지 않습니다.
-- 처음 열면 mesh를 읽는 동안 **로딩 화면**이 몇 초 나타납니다. 이후에는 곧바로 뷰어가 열립니다.
+- 웹에서 처음 열면 mesh 데이터(약 93 MB)를 받는 동안 **로딩 화면에 진행률(%)**이 표시됩니다. 받은 데이터는 브라우저에 저장되어 다음부터는 곧바로 열립니다.
 
 **이 앱의 좌표계가 특별한 이유**
 
@@ -40,7 +40,7 @@ Allen CCFv3는 관류 고정된 뇌를 기준으로 만들어져서, 수술대 �
 
 **새로 쓰기 시작한다면 이 과정을 가장 먼저 하세요.** 실험자마다 기준으로 삼는 bregma 위치가 조금씩 다르므로, 한 번 보정해 두면 이후 모든 좌표의 정확도가 올라갑니다.
 
-**Coordinates** 탭 → **Bregma / Lambda personalization** 섹션에서 조정합니다. 권장 절차는 이렇습니다.
+**Coordinates** 탭 → **Bregma / Lambda personalization** 섹션에서 조정합니다. **Bregma AP / DV 칸은 비어 있는 상태로 시작하며, 채우기 전에는 point를 만들거나 가져올 수 없습니다**(보정이 없다면 0 입력). 권장 절차는 이렇습니다.
 
 1. AP 방향으로 좁게 존재하는 구조를 target으로 고릅니다. **anterior commissure**(ML = 정중선 ± 1 mm 부근)가 적당합니다.
 2. 미량의 dye를 주입합니다. 예: Trypan Blue **2–5 nL**.
@@ -68,7 +68,7 @@ bregma–lambda 거리(**Bregma to lambda**, 기본 4.2 mm)도 같은 섹션에�
 
 **한 화면만 크게 보기**
 
-각 2D 뷰 상단의 **⛶** 버튼(3D 뷰는 우측 하단의 **⛶**)을 누르면 그 뷰 하나가 가운데 영역 전체를 차지합니다. 최대화 상태에서 **⤡** 를 누르거나 **Esc**를 누르면 4분할로 돌아옵니다.
+각 2D 뷰 상단 맨 왼쪽의 **⛶** 버튼(3D 뷰는 우측 하단의 **⛶**)을 누르면 그 뷰 하나가 가운데 영역 전체를 차지합니다. 최대화 상태에서 **⤡** 를 누르거나 **Esc**를 누르면 4분할로 돌아옵니다.
 
 **구조 켜고 끄기**
 
@@ -89,8 +89,8 @@ bregma–lambda 거리(**Bregma to lambda**, 기본 4.2 mm)도 같은 섹션에�
 - **New point**를 눌러 새 지점을 만들고, 이름 · 좌표 · **반지름**을 지정합니다. 반지름은 infusion 시 확산 범위를 가늠하는 용도입니다.
 - **2D 뷰를 클릭해서 좌표 넣기** — 좌표 줄 오른쪽 끝의 **◎ PICK** 버튼을 누르면 2D 뷰에서 커서가 십자로 바뀝니다. 이 상태에서 2D 단면의 원하는 지점을 클릭하면 그 위치의 좌표가 자동으로 입력됩니다. **Esc**로 취소합니다.
 - **색 바꾸기** — 행 왼쪽의 색 사각형을 클릭하면 위 2번과 같은 색 선택기가 열립니다.
-- point를 **더블클릭**하면 2D 뷰가 그 지점으로 이동합니다.
-- 좌표가 여러 개라면 **Import points (CSV)**로 한 번에 등록할 수 있습니다. 임의의 point를 등록한 후 **Export points (CSV)**를 실행하면, 입력 포맷을 확인할 수 있습니다.
+- point를 **더블클릭**하면 2D 뷰가 그 지점으로 이동합니다. **Mirror**를 체크하면 반대쪽 반구(ML 부호 반대)에도 같은 point와 path가 그려집니다.
+- 좌표가 여러 개라면 **Import points (CSV)**로 한 번에 등록할 수 있습니다. 임의의 point를 등록한 후 **Export points (CSV)**를 실행하면, 입력 포맷을 확인할 수 있습니다(mirror point는 이름 뒤에 `(mirror)`가 붙은 행으로 함께 나갑니다).
 
 ---
 
