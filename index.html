@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Allen CCF Tools</title>
+<style>
+:root{--bg:#ffffff;--fg:#1d2330;--muted:#5d6675;--border:#d9dde3;--accent:#2f6fde;--card:#f6f7f9}
+@media (prefers-color-scheme:dark){:root{--bg:#14171c;--fg:#e4e7ec;--muted:#9aa3b0;--border:#2c323b;--accent:#6c9cff;--card:#1b1f26}}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:32px 16px}
+h1{font-size:20px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 24px}
+a.card{display:block;padding:14px 16px;margin:0 0 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--fg);text-decoration:none}
+a.card:hover{border-color:var(--accent)}
+a.card b{color:var(--accent);font-size:14px}
+p.note{color:var(--muted);font-size:12px;margin-top:24px}
+p.note a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<h1>Allen CCF Tools</h1>
+<p class="sub">Mouse brain · CCFv3 (2017) · Created by sjleen</p>
+<a class="card" href="explorer.html"><b>Allen CCF Explorer</b><br>3D brain regions, stereotaxic points, coronal/sagittal/horizontal sections, path analysis.</a>
+<a class="card" href="slicer.html"><b>Allen CCF Slicer</b><br>Tilt the coronal plane (pitch/yaw) to match histology cutting angle; fit from electrode tracks.</a>
+<p class="note">First load downloads ~94 MB of mesh data (cached afterwards).<br>
+Guides: <a href="https://github.com/sjleen/allen_ccf_explorer/blob/main/Quick_Start_Guide_EN.md">English</a> · <a href="https://github.com/sjleen/allen_ccf_explorer/blob/main/Quick_Start_Guide_KR.md">한국어</a><br>
+Data: Allen Mouse Brain Common Coordinate Framework v3 (2017), © Allen Institute for Brain Science, <a href="https://portal.brain-map.org/">portal.brain-map.org</a> · <a href="https://alleninstitute.org/legal/terms-use/">Terms of use</a> · <a href="https://alleninstitute.org/legal/citation-policy">Citation policy</a></p>
+</main>
+</body>
+</html>
