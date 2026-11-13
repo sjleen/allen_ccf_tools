@@ -6418,6 +6418,7 @@ function ccfPerTrack(B,C,Tt){
     let a=document.getElementById("trk-p-"+i),b=document.getElementById("trk-y-"+i);a&&(a.textContent=p);b&&(b.textContent=y)});
 }
 function ccfTracksChanged(){ccfRunFit();us()}
+function ccfCsvNum(v){v=String(v??"").trim();return v===""||!Number.isFinite(+v)?"":+v}   // 빈 칸은 빈 칸으로
 function ccfCsvLine(s){let o=[],c="",q=!1;for(let i=0;i<s.length;i++){let h=s[i];if(q){h==='"'&&s[i+1]==='"'?(c+='"',i++):h==='"'?q=!1:c+=h}else h==='"'?q=!0:h===","?(o.push(c.trim()),c=""):c+=h}o.push(c.trim());return o}
 function ccfDl(name,text,type){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2e3)}
 function ccfStamp(){let d=new Date(),p=n=>String(n).padStart(2,"0");return`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}-${p(d.getHours())}-${p(d.getMinutes())}-${p(d.getSeconds())}`}
@@ -6476,7 +6477,7 @@ window.ccfSlicerSet=function(s){if(!s)return;ccfAuto=s.auto===!0;   // 옛 세�
     let H=lines[0].map(h=>h.trim()),ix=c=>H.findIndex(h=>h.toLowerCase()===c.toLowerCase()),out=[];
     if(ix("ml")<0||ix("ap")<0||ix("dv")<0){et("CSV needs ml, ap, dv columns","err");return}
     for(let r of lines.slice(1)){let g=c=>{let j=ix(c);return j<0?"":r[j]};
-      out.push({name:g("name")||g("label")||"Track "+(out.length+1),color:/^#[0-9a-f]{6}$/i.test(g("color"))?g("color"):ccfTrackCol[out.length%ccfTrackCol.length],ml:+g("ml")||0,ap:+g("ap")||0,dv:+g("dv")||0,span:g("span"),deeper:g("deeper")==="ant"?"ant":"post",tip:g("tip_offset")||g("tip"),angML:+g("angML")||0,angAP:+g("angAP")||0})}
+      out.push({name:g("name")||g("label")||"Track "+(out.length+1),color:/^#[0-9a-f]{6}$/i.test(g("color"))?g("color"):ccfTrackCol[out.length%ccfTrackCol.length],ml:ccfCsvNum(g("ml")),ap:ccfCsvNum(g("ap")),dv:ccfCsvNum(g("dv")),span:g("span"),deeper:g("deeper")==="ant"?"ant":"post",tip:g("tip_offset")||g("tip"),angML:+g("angML")||0,angAP:+g("angAP")||0})}
     // explorer point CSV(label,ml,ap,dv,color)는 늘 bregma 기준 → Target DV를 bregma로
     let fromExplorer=ix("label")>=0&&ix("name")<0,dr=$("trk-dvref");if(fromExplorer&&dr.value!=="bregma")dr.value="bregma";
     ccfTracks=out;ccfRenderTracks();ccfTracksChanged();et(out.length+(fromExplorer?" point(s) imported from Explorer as tracks (DV from bregma)":" track(s) imported"),"good")});
