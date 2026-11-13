@@ -33,12 +33,13 @@ header{padding:12px 14px 10px;display:flex;align-items:center;gap:18px;border-bo
 nav{display:flex;gap:4px;align-items:center}
 .ghost{font:inherit;font-size:11.5px;color:var(--muted);background:none;border:1px solid transparent;border-radius:6px;padding:4px 8px;cursor:pointer}
 .ghost:hover{color:var(--ink);border-color:var(--line);text-decoration:none}
-/* 가이드 언어 선택: details 하나로(스크립트 없이 열림), 바깥 클릭 닫기만 JS */
+/* 카드별 가이드 언어 선택: details(스크립트 없이 열림), 바깥 클릭 닫기만 JS. 카드가 overflow:hidden이라 위로 연다 */
 .menu{position:relative}
 .menu summary{list-style:none;display:block}
 .menu summary::-webkit-details-marker{display:none}
-.menu[open] summary{color:var(--ink);border-color:var(--line)}
-.menu-list{position:absolute;right:0;top:calc(100% + 4px);min-width:140px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px;z-index:10;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.guide{font-size:12px;color:var(--accent);cursor:pointer}
+.guide:hover{text-decoration:underline}
+.menu-list{position:absolute;left:0;bottom:calc(100% + 4px);min-width:140px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px;z-index:10;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .menu-list a{display:block;padding:5px 9px;border-radius:4px;color:var(--ink);font-size:12px}
 .menu-list a:hover{background:var(--accent-soft);text-decoration:none}
 
@@ -95,14 +96,6 @@ footer p{margin:3px 0}
   </div>
   <div class="spacer"></div>
   <nav>
-    <details class="menu" id="guide-menu">
-      <summary class="ghost">Guide &#9662;</summary>
-      <div class="menu-list">
-        <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Quick_Start_Guide_EN.md">English</a>
-        <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Quick_Start_Guide_KR.md" lang="ko">&#xD55C;&#xAD6D;&#xC5B4;</a>
-        <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Slicer_Guide.md">Slicer guide</a>
-      </div>
-    </details>
     <a class="ghost" href="https://github.com/sjleen/allen_ccf_tools">GitHub</a>
     <button class="ghost" id="theme" title="Toggle light / dark">&#9680;</button>
   </nav>
@@ -133,7 +126,13 @@ footer p{margin:3px 0}
         </ul>
         <div class="actions">
           <a class="btn" href="explorer.html">Open Explorer</a>
-          <a class="small" href="https://github.com/sjleen/allen_ccf_tools/blob/main/Quick_Start_Guide_EN.md">Quick start</a>
+          <details class="menu">
+            <summary class="guide">Guide &#9662;</summary>
+            <div class="menu-list">
+              <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Quick_Start_Guide_EN.md">English</a>
+              <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Quick_Start_Guide_KR.md" lang="ko">&#xD55C;&#xAD6D;&#xC5B4;</a>
+            </div>
+          </details>
           <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_explorer_standalone.html" title="Single-file offline version, always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline version <span class="sz">99 MB</span></a>
         </div>
       </div>
@@ -153,7 +152,13 @@ footer p{margin:3px 0}
         </ul>
         <div class="actions">
           <a class="btn" href="slicer.html">Open Slicer</a>
-          <a class="small" href="https://github.com/sjleen/allen_ccf_tools/blob/main/Slicer_Guide.md">Guide</a>
+          <details class="menu">
+            <summary class="guide">Guide &#9662;</summary>
+            <div class="menu-list">
+              <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Slicer_Guide.md">English</a>
+              <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Slicer_Guide_KR.md" lang="ko">&#xD55C;&#xAD6D;&#xC5B4;</a>
+            </div>
+          </details>
         </div>
       </div>
     </article>
@@ -183,9 +188,10 @@ footer p{margin:3px 0}
 <script>
 // 가이드 메뉴: 바깥을 누르거나 Esc면 닫기
 (function(){
-  var m=document.getElementById("guide-menu");
-  document.addEventListener("click",function(e){if(m.open&&!m.contains(e.target))m.open=false;});
-  document.addEventListener("keydown",function(e){if(e.key==="Escape")m.open=false;});
+  var ms=document.querySelectorAll("details.menu");
+  function close(except){for(var i=0;i<ms.length;i++)if(ms[i]!==except)ms[i].open=false;}
+  document.addEventListener("click",function(e){var d=e.target.closest?e.target.closest("details.menu"):null;close(d);});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")close(null);});
 })();
 // 테마: 기본 다크(도구형). 선택은 이 브라우저에만 기억
 (function(){
