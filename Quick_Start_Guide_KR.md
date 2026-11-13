@@ -112,7 +112,7 @@ bregma–lambda 거리(**Bregma to lambda**, 기본 4.2 mm)도 같은 섹션에�
 
 앱 왼쪽 최상단, 앱 이름 옆의 **Save session**을 누르면 현재 설정 · 지정한 색 · 등록한 point가 `.json` 파일로 저장됩니다. **Load session**으로 다시 불러옵니다.
 
-- **Save session** 바로 위 입력칸에 문구를 적어 두면 파일명 끝에 언더바로 이어 붙습니다(예: `ccf-session-…_mouse42.json`).
+- **Save session** 바로 위 입력칸에 문구를 적어 두면 파일명 끝에 언더바로 이어 붙습니다(예: `ccf-explorer-session-…_mouse42.json`).
 - 이 `.json`(또는 앱 html 파일)을 건네주면 같은 앱을 쓰는 다른 사람이 **동일한 상태를 그대로 재현**할 수 있습니다.
 
 ---

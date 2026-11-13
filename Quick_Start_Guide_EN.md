@@ -112,7 +112,7 @@ Tick **Path** on a point to draw the route that reaches it and create a **Path a
 
 **Save session**, next to the app name at the top-left, writes the current settings, your colors and the registered points to a `.json` file. **Load session** reads it back.
 
-- Type a note in the box just above **Save session** and it is appended to the filename after an underscore (e.g. `ccf-session-…_mouse42.json`).
+- Type a note in the box just above **Save session** and it is appended to the filename after an underscore (e.g. `ccf-explorer-session-…_mouse42.json`).
 - Hand that `.json` (or the app's html file) to someone else running the same app and they can **reproduce your exact state**.
 
 ---
