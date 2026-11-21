@@ -1,8 +1,8 @@
 # Allen CCF Slicer
 
-[Allen CCF Explorer](https://sjleen.github.io/allen_ccf_tools/explorer.html)를 바탕으로, coronal 단면을 비스듬히 자를 수 있게 만든 도구입니다. 내 histology 절편이 어떤 각도로 잘렸는지 찾고, 실제 절편 두께 간격으로 section을 한 장씩 넘겨 볼 수 있습니다.
+[Allen CCF Explorer](https://sjleen.github.io/allen_ccf_tools/explorer_compact.html)를 바탕으로, coronal 단면을 비스듬히 자를 수 있게 만든 도구입니다. 내 histology 절편이 어떤 각도로 잘렸는지 찾고, 실제 절편 두께 간격으로 section을 한 장씩 넘겨 볼 수 있습니다.
 
-웹(https://sjleen.github.io/allen_ccf_tools/slicer.html)에서 바로 열거나, html 파일과 `ccf_mesh_data.js`를 같은 폴더에 두고 html을 열면 됩니다.
+웹(https://sjleen.github.io/allen_ccf_tools/slicer_compact.html)에서 바로 열거나, [최신 릴리스](https://github.com/sjleen/allen_ccf_tools/releases/latest)에서 오프라인 버전(compact 또는 full, 아래 참고)을 받아 쓰면 됩니다.
 
 3D 뷰, ontology 목록, flat skull 보정, 내보내기, session은 Explorer와 똑같이 동작합니다. **두 입력칸은 일부러 비워 둔 채로 시작하며, 가장 먼저 채워야 합니다:** bregma AP / DV 보정(**Coordinates** 탭, 보정이 없으면 0 입력. 채우기 전에는 track을 추가하거나 가져올 수 없습니다)과 절편 **Thickness**(**Slicing** 탭. 채우기 전에는 section 번호, section 이동, **Series → CSV**, track fit이 모두 꺼져 있습니다). Explorer에 더해 왼쪽에 **Slicing** 탭, 오른쪽 패널에 **Track fit**(Explorer의 **Points** 자리이며, **Points**와 **Path filter** 탭은 여기서 숨겨져 있습니다)이 있고, **Coronal** 뷰가 기울어진 절단면을 따라갑니다.
 
@@ -52,6 +52,11 @@
 
 - `allen_ccf_slicer_v1_0.html`: 앱 (Explorer v1.0.1 + slicing).
 - `ccf_mesh_data.js`: Explorer와 같은 mesh 데이터 파일입니다. html 옆에 두세요.
+- `slicer_compact.html` + `ccf_mesh_data_compact.js`: compact 버전 앱과 그 mesh 데이터입니다. 같은 폴더에 두세요.
+
+> **Compact 버전과 full 버전** - 두 버전은 기능이 같습니다. 웹 버전은 **compact** 버전입니다. 오프라인용으로는 [최신 릴리스](https://github.com/sjleen/allen_ccf_tools/releases/latest)에서 한 파일짜리 버전 두 가지를 받을 수 있습니다. **Compact**(`allen_ccf_slicer_standalone_compact.html`, 약 14 MB)는 웹 버전과 같고, **full**(`allen_ccf_slicer_standalone.html`, 약 99 MB)은 Allen 원본 mesh를 그대로 씁니다. 이 repository 안에서는 compact 버전이 `slicer_compact.html` + `ccf_mesh_data_compact.js`, full 버전이 `slicer.html` + `ccf_mesh_data.js`입니다.
+>
+> **Compact 버전의 정확도** - compact 버전의 mesh는 Allen CCFv3 OBJ 파일을 압축한 사본이며 원본과 완전히 같지는 않습니다. Vertex 좌표는 1 µm 격자로 반올림되어 있고(최대 0.5 µm 오차, atlas 자체 해상도는 10 µm), 삼각형 구성은 원본과 같으며, surface normal은 브라우저에서 다시 계산합니다(음영에만 영향). 무작위 경로 2,440개로 시험한 결과, path analysis의 region entry/exit 깊이는 원본 mesh 대비 중앙값 0.25 µm, 99 percentile 2.7 µm 차이가 났습니다. 다만 경로가 region 표면과 거의 평행하게(약 5° 이내) 지나가는 곳에서는 교차 지점이 수십 µm까지 달라질 수 있고, 아주 살짝 스치는 region은 나타나거나 사라질 수 있습니다(2,440개 중 4개). 원본 mesh가 필요하면 full 오프라인 버전을 쓰세요.
 
 session은 `ccf-slicer-session-<시각>_<메모>.json`(이미지는 `ccf-slicer_*.png/svg`)으로 저장되어 Explorer 파일과 헷갈리지 않습니다. Explorer 형식에 `slicer` 항목이 더해진 것이라 Explorer session도 여기서 열립니다.
 

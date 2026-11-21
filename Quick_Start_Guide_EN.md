@@ -14,7 +14,11 @@ A browser-based tool for exploring the Allen Mouse Brain Common Coordinate Frame
 **Requirements**
 
 - **Chrome · Edge**, or **Firefox · Safari from 2023 onward**. Mesh decompression relies on a built-in browser feature, so older browsers will not open the app.
-- The first time you open it from the web, the **loading screen shows progress (%)** while the mesh data (about 93 MB) downloads. The browser keeps that data, so later visits open immediately.
+- The first time you open it from the web, the **loading screen shows progress (%)** while the mesh data (about 13 MB) downloads. The browser keeps that data, so later visits open immediately.
+
+> **Compact and full versions** - the two versions have the same features. The web version is the **compact** version. For offline use, the [latest release](https://github.com/sjleen/allen_ccf_tools/releases/latest) offers two single-file downloads: **compact** (`allen_ccf_explorer_standalone_compact.html`, about 14 MB, the same as the web version) and **full** (`allen_ccf_explorer_standalone.html`, about 99 MB), which uses the original Allen meshes unchanged. In this repository the compact version is `explorer_compact.html` + `ccf_mesh_data_compact.js` and the full version is `explorer.html` + `ccf_mesh_data.js`.
+>
+> **Accuracy of the compact version** - its meshes are a compressed copy of the Allen CCFv3 OBJ files, not an exact one. Vertex positions are rounded to a 1 µm grid (at most 0.5 µm off; the atlas itself is built at 10 µm), triangles are unchanged, and surface normals are recomputed in the browser, which affects shading only. In a test of 2,440 random tracks, path-analysis entry/exit depths differed from the original meshes by 0.25 µm (median) and 2.7 µm (99th percentile). Where a track runs almost parallel to a region surface (within about 5°), the crossing can shift by tens of µm, and a barely grazed region can appear or disappear (4 of 2,440 tracks). Use the full offline version when you need the original meshes.
 
 **Why this app's coordinates are different**
 

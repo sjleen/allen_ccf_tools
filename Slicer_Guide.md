@@ -1,8 +1,8 @@
 # Allen CCF Slicer
 
-A fork of [Allen CCF Explorer](https://sjleen.github.io/allen_ccf_tools/explorer.html) that cuts the coronal section at an angle, so you can find the tilt of your own histology sections and step through the series at the real section thickness.
+A fork of [Allen CCF Explorer](https://sjleen.github.io/allen_ccf_tools/explorer_compact.html) that cuts the coronal section at an angle, so you can find the tilt of your own histology sections and step through the series at the real section thickness.
 
-Open it on the web at https://sjleen.github.io/allen_ccf_tools/slicer.html, or keep the html and `ccf_mesh_data.js` together and open the html locally.
+Open it on the web at https://sjleen.github.io/allen_ccf_tools/slicer_compact.html, or download an offline version (compact or full, see below) from the [latest release](https://github.com/sjleen/allen_ccf_tools/releases/latest).
 
 Explorer's 3D view, ontology tree, flat-skull calibration, exports and sessions work the same. **Two inputs start empty on purpose and must be filled in first:** the bregma AP / DV shift (Coordinates tab; enter 0 for no correction — tracks cannot be added or imported until it is set) and the section **Thickness** (Slicing tab — section numbers, stepping, Series → CSV and the track fit stay off until it is set). This fork adds the **Slicing** tab (left) and **Track fit** (right panel, in place of Explorer's Points, which are hidden here together with the Path filter tab), and makes the Coronal view follow the tilted plane.
 
@@ -52,6 +52,11 @@ In the Coronal view each track is drawn dashed (projected), with the part that r
 
 - `allen_ccf_slicer_v1_0.html` — the app (Explorer v1.0.1 + slicing).
 - `ccf_mesh_data.js` — the same mesh data file Explorer uses; keep it next to the HTML.
+- `slicer_compact.html` + `ccf_mesh_data_compact.js` - the compact version of the app and its mesh data; keep them together.
+
+> **Compact and full versions** - the two versions have the same features. The web version is the **compact** version. For offline use, the [latest release](https://github.com/sjleen/allen_ccf_tools/releases/latest) offers two single-file downloads: **compact** (`allen_ccf_slicer_standalone_compact.html`, about 14 MB, the same as the web version) and **full** (`allen_ccf_slicer_standalone.html`, about 99 MB), which uses the original Allen meshes unchanged. In this repository the compact version is `slicer_compact.html` + `ccf_mesh_data_compact.js` and the full version is `slicer.html` + `ccf_mesh_data.js`.
+>
+> **Accuracy of the compact version** - its meshes are a compressed copy of the Allen CCFv3 OBJ files, not an exact one. Vertex positions are rounded to a 1 µm grid (at most 0.5 µm off; the atlas itself is built at 10 µm), triangles are unchanged, and surface normals are recomputed in the browser, which affects shading only. In a test of 2,440 random tracks, path-analysis entry/exit depths differed from the original meshes by 0.25 µm (median) and 2.7 µm (99th percentile). Where a track runs almost parallel to a region surface (within about 5°), the crossing can shift by tens of µm, and a barely grazed region can appear or disappear (4 of 2,440 tracks). Use the full offline version when you need the original meshes.
 
 Sessions are saved as `ccf-slicer-session-<time>_<note>.json` (images as `ccf-slicer_*.png/svg`) so they are not confused with Explorer files. They use Explorer's format with an extra `slicer` block, so Explorer sessions open here too.
 

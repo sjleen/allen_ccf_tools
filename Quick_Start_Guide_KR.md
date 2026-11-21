@@ -14,7 +14,11 @@ Allen Mouse Brain Common Coordinate Framework(**CCFv3, 2017**)의 3D mesh를 브
 **실행 환경**
 
 - **Chrome · Edge**, 또는 **2023년 이후의 Firefox · Safari**가 필요합니다. mesh 압축 해제에 브라우저 내장 기능을 쓰기 때문에 오래된 브라우저에서는 열리지 않습니다.
-- 웹에서 처음 열면 mesh 데이터(약 93 MB)를 받는 동안 **로딩 화면에 진행률(%)**이 표시됩니다. 받은 데이터는 브라우저에 저장되어 다음부터는 곧바로 열립니다.
+- 웹에서 처음 열면 mesh 데이터(약 13 MB)를 받는 동안 **로딩 화면에 진행률(%)**이 표시됩니다. 받은 데이터는 브라우저에 저장되어 다음부터는 곧바로 열립니다.
+
+> **Compact 버전과 full 버전** - 두 버전은 기능이 같습니다. 웹 버전은 **compact** 버전입니다. 오프라인용으로는 [최신 릴리스](https://github.com/sjleen/allen_ccf_tools/releases/latest)에서 한 파일짜리 버전 두 가지를 받을 수 있습니다. **Compact**(`allen_ccf_explorer_standalone_compact.html`, 약 14 MB)는 웹 버전과 같고, **full**(`allen_ccf_explorer_standalone.html`, 약 99 MB)은 Allen 원본 mesh를 그대로 씁니다. 이 repository 안에서는 compact 버전이 `explorer_compact.html` + `ccf_mesh_data_compact.js`, full 버전이 `explorer.html` + `ccf_mesh_data.js`입니다.
+>
+> **Compact 버전의 정확도** - compact 버전의 mesh는 Allen CCFv3 OBJ 파일을 압축한 사본이며 원본과 완전히 같지는 않습니다. Vertex 좌표는 1 µm 격자로 반올림되어 있고(최대 0.5 µm 오차, atlas 자체 해상도는 10 µm), 삼각형 구성은 원본과 같으며, surface normal은 브라우저에서 다시 계산합니다(음영에만 영향). 무작위 경로 2,440개로 시험한 결과, path analysis의 region entry/exit 깊이는 원본 mesh 대비 중앙값 0.25 µm, 99 percentile 2.7 µm 차이가 났습니다. 다만 경로가 region 표면과 거의 평행하게(약 5° 이내) 지나가는 곳에서는 교차 지점이 수십 µm까지 달라질 수 있고, 아주 살짝 스치는 region은 나타나거나 사라질 수 있습니다(2,440개 중 4개). 원본 mesh가 필요하면 full 오프라인 버전을 쓰세요.
 
 **이 앱의 좌표계가 특별한 이유**
 

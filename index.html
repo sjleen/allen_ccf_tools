@@ -67,13 +67,16 @@ p,li{text-wrap:pretty}
 .actions{margin-top:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .btn{display:inline-block;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:6px;background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent)}
 .btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn .sz{font-weight:400;opacity:.8}
+
 .actions .small{font-size:12px}
 /* 오프라인 단일 파일: 같은 줄 오른쪽 끝, Open보다 한 단계 약하게 */
-.dl{margin-left:auto;font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);color:var(--ink);background:transparent}
+.dls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.dl{font-size:12px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);color:var(--ink);background:transparent}
 .dl:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
 .dl .sz{color:var(--muted);font-weight:400}
 
-.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:30px 0 0;padding:22px 0 0;border-top:1px solid var(--line)}
+.notes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:30px 0 0;padding:22px 0 0;border-top:1px solid var(--line)}
 .notes h3{margin:0 0 4px;font-size:12.5px;font-weight:650}
 .notes p{margin:0;color:var(--muted);font-size:12.5px}
 footer{max-width:1240px;margin:0 auto;padding:16px 16px 28px;border-top:1px solid var(--line-soft);color:var(--muted);font-size:11.5px}
@@ -112,7 +115,7 @@ footer p{margin:3px 0}
 
   <div class="apps">
     <article class="app explorer">
-      <a class="shot" href="explorer.html"><img src="img/explorer.jpg" alt="Allen CCF Explorer: 3D brain with probe paths, path analysis and three section views" loading="eager"></a>
+      <a class="shot" href="explorer_compact.html"><img src="img/explorer.jpg" alt="Allen CCF Explorer: 3D brain with probe paths, path analysis and three section views" loading="eager"></a>
       <div class="body">
         <div class="tag">Plan</div>
         <h2>Allen CCF Explorer</h2>
@@ -124,7 +127,7 @@ footer p{margin:3px 0}
           <li>Personal bregma calibration, sessions, PNG and vector SVG export</li>
         </ul>
         <div class="actions">
-          <a class="btn" href="explorer.html">Open Explorer</a>
+          <a class="btn" href="explorer_compact.html">Open Explorer</a>
           <details class="menu">
             <summary class="guide">Guide &#9662;</summary>
             <div class="menu-list">
@@ -132,13 +135,16 @@ footer p{margin:3px 0}
               <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Quick_Start_Guide_KR.md" lang="ko">&#xD55C;&#xAD6D;&#xC5B4;</a>
             </div>
           </details>
-          <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_explorer_standalone.html" title="Single-file offline version, always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline version <span class="sz">99 MB</span></a>
+          <span class="dls">
+            <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_explorer_standalone_compact.html" title="Single-file offline version with compact meshes (same as the web version), always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline compact <span class="sz">14 MB</span></a>
+            <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_explorer_standalone.html" title="Single-file offline version with the original Allen meshes, always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline full <span class="sz">99 MB</span></a>
+          </span>
         </div>
       </div>
     </article>
 
     <article class="app slicer">
-      <a class="shot" href="slicer.html"><img src="img/slicer.jpg" alt="Allen CCF Slicer: sagittal section showing the tilted cutting plane and its neighbouring sections" loading="eager"></a>
+      <a class="shot" href="slicer_compact.html"><img src="img/slicer.jpg" alt="Allen CCF Slicer: tilted coronal section through dorsal hippocampus CA1, where bilateral mirror-image tracks cross the plane at different depths" loading="eager"></a>
       <div class="body">
         <div class="tag">Match histology</div>
         <h2>Allen CCF Slicer</h2>
@@ -150,7 +156,7 @@ footer p{margin:3px 0}
           <li>Section series to CSV, with the AP at the edges of every section</li>
         </ul>
         <div class="actions">
-          <a class="btn" href="slicer.html">Open Slicer</a>
+          <a class="btn" href="slicer_compact.html">Open Slicer</a>
           <details class="menu">
             <summary class="guide">Guide &#9662;</summary>
             <div class="menu-list">
@@ -158,7 +164,10 @@ footer p{margin:3px 0}
               <a href="https://github.com/sjleen/allen_ccf_tools/blob/main/Slicer_Guide_KR.md" lang="ko">&#xD55C;&#xAD6D;&#xC5B4;</a>
             </div>
           </details>
-          <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_slicer_standalone.html" title="Single-file offline version, always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline version <span class="sz">99 MB</span></a>
+          <span class="dls">
+            <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_slicer_standalone_compact.html" title="Single-file offline version with compact meshes (same as the web version), always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline compact <span class="sz">14 MB</span></a>
+            <a class="dl" href="https://github.com/sjleen/allen_ccf_tools/releases/latest/download/allen_ccf_slicer_standalone.html" title="Single-file offline version with the original Allen meshes, always the latest release: download, then double-click to open. No internet needed.">&#8595; Offline full <span class="sz">99 MB</span></a>
+          </span>
         </div>
       </div>
     </article>
@@ -166,8 +175,12 @@ footer p{margin:3px 0}
 
   <section class="notes">
     <div>
+      <h3>Compact or full</h3>
+      <p>The web version is the compact version: same features, but its meshes are compressed with vertex positions rounded to 1&nbsp;&micro;m, so region depths can differ slightly from the original (details in its Provenance section). For the original Allen meshes, download the <b>full</b> offline version. The <b>compact</b> offline version is the web version in one file.</p>
+    </div>
+    <div>
       <h3>First visit</h3>
-      <p>The atlas meshes (about 93 MB) download once with a progress bar. The browser keeps them, so later visits open right away.</p>
+      <p>The atlas meshes (about 13 MB) download once with a progress bar. The browser keeps them, so later visits open right away.</p>
     </div>
     <div>
       <h3>Before you start</h3>
